@@ -45,39 +45,93 @@ class DoublyLinkedList:
 
 
 def build_sll_from_list(values: list[int]) -> SinglyLinkedList:
-    """Build and return a singly linked list from a Python list.
+    sll = SinglyLinkedList()
 
-    Examples:
-        >>> sll_to_list(build_sll_from_list([]))
-        []
-        >>> sll_to_list(build_sll_from_list([4, 7, 9]))
-        [4, 7, 9]
-    """
-    raise NotImplementedError
+    if len(values) == 0:
+        return sll
+
+    sll.head = SLLNode(values[0])
+    current = sll.head
+
+    for i in range(1, len(values)):
+        new_node = SLLNode(values[i])
+        current.next = new_node
+        current = new_node
+
+    return sll
 
 
 def sll_to_list(sll: SinglyLinkedList) -> list[int]:
-    """Return all values from a singly linked list as a Python list."""
-    raise NotImplementedError
+    result = []
+    current = sll.head
+
+    while current != None:
+        result.append(current.value)
+        current = current.next
+
+    return result
+
 
 
 def find_first_repeat_sll(sll: SinglyLinkedList) -> int | None:
-    """Return the first repeated value seen from left to right.
+    seen = []
+    current = sll.head
 
-    Return None if no value repeats.
-    """
-    raise NotImplementedError
+    while current != None:
+        if current.value in seen:
+            return current.value
+        else:
+            seen.append(current.value)
+
+        current = current.next
+
+    return None
+
 
 
 def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
-    """Remove all nodes whose value equals target.
+    current = dll.head
 
-    Update dll.head and dll.tail correctly.
-    Return None.
-    """
-    raise NotImplementedError
+    while current != None:
+        next_node = current.next
+        if current.value == target:
+
+            if current.prev == None:
+                dll.head = current.next
+                if dll.head != None:
+                    dll.head.prev = None
+
+
+            elif current.next == None:
+                dll.tail = current.prev
+                if dll.tail != None:
+                    dll.tail.next = None
+
+
+            else:
+                current.prev.next = current.next
+                current.next.prev = current.prev
+
+        current = next_node
+
+
+    if dll.head == None:
+        dll.tail = None
 
 
 def is_train_palindrome(dll: DoublyLinkedList) -> bool:
-    """Stretch: return True if the DLL reads the same forward and backward."""
-    raise NotImplementedError
+    left = dll.head
+    right = dll.tail
+
+    while left != None and right != None:
+        if left.value != right.value:
+            return False
+
+
+        if left == right or left.next == right:
+            break
+
+        left = left.next
+        right = right.prev
+
+    return True
