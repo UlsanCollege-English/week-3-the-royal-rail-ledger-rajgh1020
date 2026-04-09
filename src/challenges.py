@@ -45,8 +45,9 @@ class DoublyLinkedList:
 
 
 def build_sll_from_list(values: list[int]) -> SinglyLinkedList:
-    """Build and return a singly linked list from a Python list.
+    sll = SinglyLinkedList()
 
+<<<<<<< HEAD
     Examples:
         >>> sll_to_list(build_sll_from_list([]))
         []
@@ -63,18 +64,32 @@ def build_sll_from_list(values: list[int]) -> SinglyLinkedList:
     current = sll.head
 
     # add remaining nodes
+=======
+    if len(values) == 0:
+        return sll
+
+    sll.head = SLLNode(values[0])
+    current = sll.head
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
     for i in range(1, len(values)):
         new_node = SLLNode(values[i])
         current.next = new_node
         current = new_node
 
     return sll
+<<<<<<< HEAD
 
     raise NotImplementedError
 
 
 def sll_to_list(sll: SinglyLinkedList) -> list[int]:
     """Return all values from a singly linked list as a Python list."""
+=======
+
+
+def sll_to_list(sll: SinglyLinkedList) -> list[int]:
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
     result = []
     current = sll.head
 
@@ -83,12 +98,28 @@ def sll_to_list(sll: SinglyLinkedList) -> list[int]:
         current = current.next
 
     return result
+<<<<<<< HEAD
     raise NotImplementedError
+=======
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
 
 
 def find_first_repeat_sll(sll: SinglyLinkedList) -> int | None:
-    """Return the first repeated value seen from left to right.
+    seen = []
+    current = sll.head
 
+    while current != None:
+        if current.value in seen:
+            return current.value
+        else:
+            seen.append(current.value)
+
+        current = current.next
+
+    return None
+
+<<<<<<< HEAD
     Return None if no value repeats.
     """
     seen = []  
@@ -104,11 +135,14 @@ def find_first_repeat_sll(sll: SinglyLinkedList) -> int | None:
 
     return None
     raise NotImplementedError
+=======
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
 
 
 def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
-    """Remove all nodes whose value equals target.
+    current = dll.head
 
+<<<<<<< HEAD
     Update dll.head and dll.tail correctly.
     Return None.
     """
@@ -118,22 +152,37 @@ def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
         next_node = current.next  
 
         if current.value == target:
+=======
+    while current != None:
+        next_node = current.next
+        if current.value == target:
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
             if current.prev == None:
                 dll.head = current.next
                 if dll.head != None:
                     dll.head.prev = None
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
             elif current.next == None:
                 dll.tail = current.prev
                 if dll.tail != None:
                     dll.tail.next = None
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
             else:
                 current.prev.next = current.next
                 current.next.prev = current.prev
 
         current = next_node
 
+<<<<<<< HEAD
     if dll.head == None:
         dll.tail = None
     raise NotImplementedError
@@ -141,6 +190,14 @@ def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
 
 def is_train_palindrome(dll: DoublyLinkedList) -> bool:
     """Stretch: return True if the DLL reads the same forward and backward."""
+=======
+
+    if dll.head == None:
+        dll.tail = None
+
+
+def is_train_palindrome(dll: DoublyLinkedList) -> bool:
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
     left = dll.head
     right = dll.tail
 
@@ -148,12 +205,20 @@ def is_train_palindrome(dll: DoublyLinkedList) -> bool:
         if left.value != right.value:
             return False
 
+<<<<<<< HEAD
         # stop when pointers meet or cross
+=======
+
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd
         if left == right or left.next == right:
             break
 
         left = left.next
         right = right.prev
 
+<<<<<<< HEAD
     return True
     raise NotImplementedError
+=======
+    return True
+>>>>>>> bb4937aeab0357255b676a8256e7347290d120fd

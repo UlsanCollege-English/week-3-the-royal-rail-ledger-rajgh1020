@@ -1,169 +1,111 @@
-# Week 3 Assignment: The Royal Rail Ledger
+# Week 3: The Royal Rail Ledger
 
-**Due:** Fri, March 20, 2026 at 23:59 KST  
-**Repo:** `ds26-wk03-royal-rail-ledger-<student>`  
-**Files that count for grading:**
-- `src/challenges.py`
-- `tests/test_challenges.py`
-- `README.md`
-
-## Story
-The Kingdom of Velora runs a railway system that tracks cargo using linked train cars.
-
-Each train car stores one integer cargo code. Some trains use **singly linked lists** because cargo is checked in one direction. Other trains use **doubly linked lists** because inspectors need to move from either end.
-
-The Royal Rail Office already practiced the basic linked-list operations in class. Now they need you to solve harder inspection and repair problems.
-
-## Your mission
-You will write functions that:
-- build and inspect a **singly linked list**
-- analyze repeated cargo codes
-- repair a **doubly linked list** by removing banned cargo
-- check whether a train reads the same from both ends
-
-This assignment builds on ideas from:
-- **Week 1:** functions, returns, pytest, debugging
-- **Week 2:** Python lists, boundaries, iteration, and careful thinking about order
-- **Week 3:** linked lists, traversal, constructors, and pointer updates
-
-## What you need to do
-Implement the required functions in `src/challenges.py` so that all tests in `tests/test_challenges.py` pass.
-
-You must use the provided classes and function names.
-
-## Tasks
-
-### Task 1: Build the freight manifest
-Implement:
-
-```python
-def build_sll_from_list(values: list[int]) -> SinglyLinkedList:
-```
-
-Given a Python list of cargo codes, build and return a `SinglyLinkedList` with the same values in the same order.
-
-Examples:
-- `[]` becomes an empty linked list
-- `[4, 7, 9]` becomes `4 -> 7 -> 9`
+## Summary
+This assignment focuses on linked-list operations in a railway story setting. I implemented functions for building and reading a singly linked list, finding the first repeated value, removing banned cargo from a doubly linked list, and checking whether a train is a palindrome. The assignment uses both singly linked lists and doubly linked lists. The hardest part was updating pointers correctly in the doubly linked list when removing nodes.
 
 ---
 
-### Task 2: Produce a station report
-Implement:
+## Approach
 
-```python
-def sll_to_list(sll: SinglyLinkedList) -> list[int]:
-```
+### `build_sll_from_list(values)`
+- I started with creating an empty singly linked list  
+- I built the list by creating nodes one by one and linking them using `next`  
+- I made sure the values stayed in the correct order by adding nodes from left to right  
 
-Return a regular Python list containing all values from the singly linked list in order.
+### `sll_to_list(sll)`
+- I started at the head of the linked list  
+- I traversed the list by moving to the next node each time  
+- I collected values in a Python list by appending each node’s value  
 
-Examples:
-- empty list returns `[]`
-- `4 -> 7 -> 9` returns `[4, 7, 9]`
+### `find_first_repeat_sll(sll)`
+- I tracked values I had already seen by using a simple Python list  
+- When I found a repeated value, I returned it immediately  
+- If I reached the end with no repeat, I returned `None`  
 
----
+### `remove_all_from_dll(dll, target)`
+- I traversed the list using a `current` pointer  
+- When I found the target value, I updated `prev` and `next` pointers to remove the node  
+- I checked special cases such as removing the head, tail, and when the list becomes empty  
 
-### Task 3: Find the first repeated cargo code
-Implement:
-
-```python
-def find_first_repeat_sll(sll: SinglyLinkedList) -> int | None:
-```
-
-Return the **first value that repeats** when scanning from head to tail.
-
-Examples:
-- `3 -> 5 -> 7 -> 5 -> 9` returns `5`
-- `8 -> 2 -> 8 -> 3` returns `8`
-- `1 -> 2 -> 3 -> 4` returns `None`
-
-Be careful: this is **not** asking for the most common value. It is asking for the **first repeated value encountered during traversal**.
+### `is_train_palindrome(dll)`
+- I compared values from the head and tail moving towards the center  
+- I stopped when the pointers met or crossed each other  
+- I returned `True` or `False` based on whether all values matched  
 
 ---
 
-### Task 4: Remove all banned cargo from an inspection train
-Implement:
+## Complexity
 
-```python
-def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
-```
+### `build_sll_from_list(values)`
+- **Time complexity:** O(n)  
+- **Space complexity:** O(n)  
+- **Why:** I loop through the list once and create one node for each value  
 
-Remove **all** nodes whose value equals `target` from the doubly linked list.
+### `sll_to_list(sll)`
+- **Time complexity:** O(n)  
+- **Space complexity:** O(n)  
+- **Why:** I traverse the list once and store values in a new list  
 
-You must update:
-- `dll.head`
-- `dll.tail`
-- all necessary `prev` and `next` links
+### `find_first_repeat_sll(sll)`
+- **Time complexity:** O(n²)  
+- **Space complexity:** O(n)  
+- **Why:** I check each value in a list using `in`, which takes extra time  
 
-Examples:
-- `4 <-> 2 <-> 2 <-> 5`, remove `2` becomes `4 <-> 5`
-- `7 <-> 7 <-> 7`, remove `7` becomes an empty list
-- removing a missing value changes nothing
+### `remove_all_from_dll(dll, target)`
+- **Time complexity:** O(n)  
+- **Space complexity:** O(1)  
+- **Why:** I go through the list once and only change pointers  
+
+### `is_train_palindrome(dll)` *(stretch)*
+- **Time complexity:** O(n)  
+- **Space complexity:** O(1)  
+- **Why:** I compare from both ends without using extra space  
 
 ---
 
-### Stretch Task: Palindrome inspection
-Implement:
+## Edge-Case Checklist
 
-```python
-def is_train_palindrome(dll: DoublyLinkedList) -> bool:
-```
+- [x] empty SLL  
+- [x] empty DLL  
+- [x] single-node SLL  
+- [x] single-node DLL  
+- [x] no repeated values in SLL  
+- [x] repeated value appears later in SLL  
+- [x] repeated value includes the head value  
+- [x] removing from DLL when target is at head  
+- [x] removing from DLL when target is at tail  
+- [x] removing consecutive target values in DLL  
+- [x] removing all nodes from DLL  
+- [x] palindrome with odd length  
+- [x] palindrome with even length  
+- [x] non-palindrome DLL  
 
-Return `True` if the train reads the same from front to back and back to front.
+---
 
-Examples:
-- `1 <-> 2 <-> 3 <-> 2 <-> 1` returns `True`
-- `4 <-> 9 <-> 9 <-> 4` returns `True`
-- `1 <-> 2 <-> 3 <-> 4` returns `False`
+## Assistance & Sources
 
-## Requirements
-- Use **Python 3.11+**
-- Use **stdlib only**
-- Do not rename the provided classes or functions
-- Do not submit notebooks for grading
-- Your code should be in `.py` files and tested with `pytest`
+### AI use
+- I used AI: Yes  
+- It helped me understand how to handle pointer updates and debug my logic  
 
-## Edge cases you must handle
-Your code should work correctly for:
-- empty singly linked list
-- empty doubly linked list
-- single-node lists
-- repeated values
-- removing from the head
-- removing from the tail
-- removing consecutive matching values
-- removing all nodes from a list
-- palindrome cases with even and odd lengths
+### Other sources
+- Class notes: Yes  
+- Slides: Yes  
+- Book: No  
+- Websites: No  
+- Other: None  
 
-## README requirements
-Your `README.md` must include:
-- Summary
-- Approach
-- Complexity
-- Edge-case checklist
-- Assistance & Sources
+---
 
-A starter template is provided separately.
+## Debugging Notes
 
-## Submission checklist
-- [ ] I implemented all required functions
-- [ ] `pytest -q` passes
-- [ ] My code is in `src/challenges.py`
-- [ ] My tests are in `tests/test_challenges.py`
-- [ ] My `README.md` is complete
-- [ ] I handled empty, single-node, head, and tail cases
+- I first got stuck on removing nodes in the doubly linked list  
+- The failing test that helped me most was when removing all nodes  
+- I fixed the issue by carefully updating both `prev` and `next` pointers  
+- One mistake I will avoid next time is forgetting to update the `tail`  
 
-## Hints
-- Draw the list before and after each pointer change
-- For linked lists, order matters
-- For DLL repairs, forgetting one link update can break the whole structure
-- If a test fails, read the error message carefully and debug one case at a time
+---
 
-## Revision policy
-If revisions are allowed in your section, they must follow the course revision process:
-- submit a Revision Request Issue
-- link your PR or commits
-- name the standards you want re-checked
+## Final Reflection
 
-Do not wait until the last minute. Pointer bugs love drama.
-
+This assignment helped me understand how linked lists work internally. Doubly linked lists were harder because of pointer updates. The most surprising edge case was when the entire list gets deleted. Before the next assignment, I will review pointer handling and traversal logic.
