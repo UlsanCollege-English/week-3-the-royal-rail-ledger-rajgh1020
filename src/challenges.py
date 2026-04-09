@@ -53,11 +53,36 @@ def build_sll_from_list(values: list[int]) -> SinglyLinkedList:
         >>> sll_to_list(build_sll_from_list([4, 7, 9]))
         [4, 7, 9]
     """
+    sll = SinglyLinkedList()
+
+    if len(values) == 0:
+        return sll
+
+    # create first node
+    sll.head = SLLNode(values[0])
+    current = sll.head
+
+    # add remaining nodes
+    for i in range(1, len(values)):
+        new_node = SLLNode(values[i])
+        current.next = new_node
+        current = new_node
+
+    return sll
+
     raise NotImplementedError
 
 
 def sll_to_list(sll: SinglyLinkedList) -> list[int]:
     """Return all values from a singly linked list as a Python list."""
+    result = []
+    current = sll.head
+
+    while current != None:
+        result.append(current.value)
+        current = current.next
+
+    return result
     raise NotImplementedError
 
 
@@ -66,6 +91,18 @@ def find_first_repeat_sll(sll: SinglyLinkedList) -> int | None:
 
     Return None if no value repeats.
     """
+    seen = []  
+    current = sll.head
+
+    while current != None:
+        if current.value in seen:
+            return current.value
+        else:
+            seen.append(current.value)
+
+        current = current.next
+
+    return None
     raise NotImplementedError
 
 
@@ -75,9 +112,48 @@ def remove_all_from_dll(dll: DoublyLinkedList, target: int) -> None:
     Update dll.head and dll.tail correctly.
     Return None.
     """
+    current = dll.head
+
+    while current != None:
+        next_node = current.next  
+
+        if current.value == target:
+            if current.prev == None:
+                dll.head = current.next
+                if dll.head != None:
+                    dll.head.prev = None
+
+            elif current.next == None:
+                dll.tail = current.prev
+                if dll.tail != None:
+                    dll.tail.next = None
+
+            else:
+                current.prev.next = current.next
+                current.next.prev = current.prev
+
+        current = next_node
+
+    if dll.head == None:
+        dll.tail = None
     raise NotImplementedError
 
 
 def is_train_palindrome(dll: DoublyLinkedList) -> bool:
     """Stretch: return True if the DLL reads the same forward and backward."""
+    left = dll.head
+    right = dll.tail
+
+    while left != None and right != None:
+        if left.value != right.value:
+            return False
+
+        # stop when pointers meet or cross
+        if left == right or left.next == right:
+            break
+
+        left = left.next
+        right = right.prev
+
+    return True
     raise NotImplementedError
